@@ -1,3 +1,3 @@
 # XO
-Simple Tic-Tac-Toe game
+Simple Tic-Tac-Toe game<br>
 lang="ru"
