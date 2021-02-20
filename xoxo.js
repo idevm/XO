@@ -178,7 +178,7 @@ function isGameEnd (item){ // проверка окончена ли игра
 			model.starScore++;
 			localStorage.setItem('XOstars', model.starScore);
 			view.displayStarScore();
-			document.getElementById('star').src = 'winStar.png';
+			document.getElementById('star').src = 'images/winStar.png';
 			document.getElementById('star').setAttribute('class', 'winStar');	
 		} 
 	} else {
@@ -197,7 +197,7 @@ function isGameEnd (item){ // проверка окончена ли игра
 					localStorage.setItem('XOstars', model.starScore);
 					view.displayStarScore();
 				}
-				document.getElementById('star').src = 'failStar.png';
+				document.getElementById('star').src = 'images/failStar.png';
 				document.getElementById('star').setAttribute('class', 'failStar');
 			} 
 		}		
@@ -407,7 +407,7 @@ function setFreeCells(){ // генерация координат свободн
 function setStar (location){ // размещение звезды на поле
 	if (model.difficult > 0){
 		let star = document.createElement('img');
-		star.src = 'star.png';
+		star.src = 'images/star.png';
 		star.id = 'star';
 		document.getElementById(location).append(star);
 		model.currentStarLocation = location;			
