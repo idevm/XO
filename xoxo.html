@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.4">
+	<link rel="stylesheet" href="xoxo.css">
+	<link rel="preload" href="Capture_it-webfont.woff" as="font">
+	<link rel="preload" href="images/logo.png" as="image">
+	<link rel="preload" href="images/loader.gif" as="image">
+	<link rel="preload" href="images/board.png" as="image">
+	<link rel="preload" href="images/button.png" as="image">
+	<link rel="preload" href="images/darkMode.png" as="image">
+	<link rel="preload" href="images/lightMode.png" as="image">
+	<link rel="preload" href="images/mute.png" as="image">
+	<link rel="preload" href="images/oButton.png" as="image">
+	<link rel="preload" href="images/xButton.png" as="image">
+	<link rel="preload" href="images/sound.png" as="image">
+	<link rel="preload" href="images/starScore.png" as="image">
+	<link rel="preload" href="images/failStar.png" as="image">
+	<link rel="preload" href="images/o.png" as="image">
+	<link rel="preload" href="images/star.png" as="image">
+	<link rel="preload" href="images/winCol0.png" as="image">
+	<link rel="preload" href="images/winCol1.png" as="image">
+	<link rel="preload" href="images/winCol2.png" as="image">
+	<link rel="preload" href="images/winDia1.png" as="image">
+	<link rel="preload" href="images/winDia2.png" as="image">
+	<link rel="preload" href="images/winRow0.png" as="image">
+	<link rel="preload" href="images/winRow1.png" as="image">
+	<link rel="preload" href="images/winRow2.png" as="image">
+	<link rel="preload" href="images/winStar.png" as="image">
+	<link rel="preload" href="images/x.png" as="image">
+	<link rel="preload" href="images/easyButtonSelected.png" as="image">
+	<link rel="preload" href="images/easyButtonUnselected.png" as="image">
+	<link rel="preload" href="images/normalButtonSelected.png" as="image">
+	<link rel="preload" href="images/normalButtonUnselected.png" as="image">
+
+	<title>Крестики-нолики</title>
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript" >
+		(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+ 			m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   		(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+		ym(72061369, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+		});
+	</script>
+	<noscript><div><img src="https://mc.yandex.ru/watch/72061369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+	<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+	<div id="loadScreen">
+		<div id="header">КРЕСТИКИ-НОЛИКИ</div>
+		<div id="logo"></div>
+		<div id="loading">ЗАГРУЗКА</div>
+		<div id="loader"></div>
+	</div>
+	<div id="field">
+		<div id="messageArea">Крестики-нолики</div>
+		<div id="colorMode"></div>
+		<div id="soundMode"></div>
+		<div id="starScore"></div>
+		<div id="difMode" class="normal">C</div>
+		<div id="difWindow" style="display: none">
+			<div id="difWindowHeader">Выберите уровень сложности</div>
+			<div id="difWindowText">Текущая игра будет завершена</div>
+			<div id="easyButton" class="unselEasyBut">ЛЕГКО</div>
+			<div id="normalButton" class="selNormBut">НОРМАЛЬНО</div>
+		</div>
+		<div id="board">
+			<div id="window">
+				<div id="chooseSymbol">
+					<p><b>Выберите символ</b></p>
+	  			</div>	
+	  			<div id="buttonX"></div>
+	  			<div id="buttonO"></div>  				
+			</div>
+			<table id="table">
+				<tr>
+					<td id="00"></td>
+					<td id="01"></td>
+					<td id="02"></td>
+				</tr>
+				<tr>
+					<td id="10"></td>
+					<td id="11"></td>
+					<td id="12"></td>
+				</tr>
+				<tr>
+					<td id="20"></td>
+					<td id="21"></td>
+					<td id="22"></td>
+				</tr>
+			</table>
+			<div id="winLine"></div>
+		</div>
+		<div id="statArea"></div>
+		<div id="endGameButton">Завершить</div>
+		<div id="continueGameButton">Продолжить</div>
+	</div>		
+	<script src="xoxo.js"></script>	
+</body>
+</html>
