@@ -356,6 +356,9 @@ function init(){ //инициализация игры (стартового э�
 }
 
 function start (sym){ // старт игры
+	model.rounds = 0;
+	model.playerScore = 0;
+	model.AIScore = 0;
 	document.querySelector('#window').style.display = 'none';
 	document.querySelector('#endGameButton').style.display = 'block';
 	document.querySelector('#continueGameButton').style.display = 'block';
@@ -420,9 +423,6 @@ function endGame(){ // завершение игры и выход на стар
 	model.currentMessage = 'Крестики-нолики';
 	view.displayMessage(model.currentMessage);
 	clearBoard();
-	model.rounds = 0;
-	model.playerScore = 0;
-	model.AIScore = 0;
 	model.currentPlayer = null;
 	model.currentAI = null;
 	model.currentMove = null;
