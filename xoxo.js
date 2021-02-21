@@ -1,7 +1,18 @@
+function domId(id) { // сокращение для удобства
+	return document.getElementById(id);
+}
+
+let timer; // для сохранения id таймеров и их отмены
+
 var view = { //визуальное представление
 	
 	displayMessage: function (msg){ //вывод сообщений
-		show(msg);
+		if (msg !== model.currentMessage) {
+			clearTimeout(timer);
+			show(msg);
+		} else {
+			show(msg);
+		}
 		if (msg === 'Вы выиграли!'){
 			document.querySelector('#messageArea').style.color = '#42A61F';
 		} else if (msg === 'Вы проиграли!'){
@@ -12,31 +23,31 @@ var view = { //визуальное представление
 	},
 
 	displayStat: function (){ //вывод счета и количества сыгранных партий
-		document.getElementById('statArea').innerHTML = 'Счет ' + model.playerScore + 
+		domId('statArea').innerHTML = 'Счет ' + model.playerScore + 
 		' : ' + model.AIScore + '<br>' + 'Сыграно партий: ' + model.rounds;
 	},
 	
 	displaySym: function (location, sym){ //вывод ходов
-		document.getElementById(location).setAttribute('class', sym);
+		domId(location).setAttribute('class', sym);
 		sym === 'x' ? playSound(xSound) : playSound(oSound);
 	},	
 
 	displayLine: function (name){ // вывод линии трех подряд символов
-		document.getElementById('winLine').style.display = 'block';
-		document.getElementById('winLine').setAttribute('class', name);				
+		domId('winLine').style.display = 'block';
+		domId('winLine').setAttribute('class', name);				
 	},
 
 	removeLine: function (){ // стереть победную линию
-		document.getElementById('winLine').classList = [];
-		document.getElementById('winLine').style.display = 'none';		
+		domId('winLine').classList = [];
+		domId('winLine').style.display = 'none';		
 	},
 
 	displayStarScore: function (){ // показ количества звезд
-		document.getElementById('starScore').innerHTML = model.starScore;
+		domId('starScore').innerHTML = model.starScore;
 	},
 	displayCurrentPlayer: function (){ // символ игрока в кнопке режима сложности
 		let sign = model.currentPlayer;
-		document.getElementById('difMode').innerHTML = sign.toUpperCase();
+		domId('difMode').innerHTML = sign.toUpperCase();
 	}
 };
 
@@ -49,7 +60,7 @@ function show(msg){ // анимация строки сообщения
 		setTimeout(
 			function(){
 				liveString += letters[index];
-				document.getElementById('messageArea').innerHTML = liveString;
+				domId('messageArea').innerHTML = liveString;
 				index += 1;
 				if (index === letters.length){
 					return;
@@ -178,8 +189,8 @@ function isGameEnd (item){ // проверка окончена ли игра
 			model.starScore++;
 			localStorage.setItem('XOstars', model.starScore);
 			view.displayStarScore();
-			document.getElementById('star').src = 'images/winStar.png';
-			document.getElementById('star').setAttribute('class', 'winStar');	
+			domId('star').src = 'images/winStar.png';
+			domId('star').setAttribute('class', 'winStar');	
 		} 
 	} else {
 		if (item.hits.every(function (hit){return hit === model.currentAI;})){
@@ -197,8 +208,8 @@ function isGameEnd (item){ // проверка окончена ли игра
 					localStorage.setItem('XOstars', model.starScore);
 					view.displayStarScore();
 				}
-				document.getElementById('star').src = 'images/failStar.png';
-				document.getElementById('star').setAttribute('class', 'failStar');
+				domId('star').src = 'images/failStar.png';
+				domId('star').setAttribute('class', 'failStar');
 			} 
 		}		
 	}
@@ -261,7 +272,7 @@ function parseMove(location){ //валидатор хода игрока
 		model.playerTurn(location);
 	} else {
 		view.displayMessage('Ячейка занята!');
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
 	}
@@ -286,16 +297,16 @@ function init(){ //инициализация игры (стартового э�
 		XOColorMode = 'light';
 		localStorage.setItem('XOColorMode', XOColorMode);
 	}	
-	document.getElementById('colorMode').setAttribute('class', XOColorMode + 'Mode');
+	domId('colorMode').setAttribute('class', XOColorMode + 'Mode');
 	document.body.setAttribute('class', XOColorMode + 'Body');
-	document.getElementById('window').setAttribute('class', XOColorMode + 'Window');
+	domId('window').setAttribute('class', XOColorMode + 'Window');
 
 	let XOSoundMode = localStorage.getItem('XOSoundMode');
 	if (!XOSoundMode) {
 		XOSoundMode = 'sound';
 		localStorage.setItem('XOSoundMode', 'sound');
 	}
-	document.getElementById('soundMode').setAttribute('class', XOSoundMode);
+	domId('soundMode').setAttribute('class', XOSoundMode);
 
 	let XOstars = parseInt(localStorage.getItem('XOstars'));
 	if (!XOstars) {
@@ -306,48 +317,48 @@ function init(){ //инициализация игры (стартового э�
 	view.displayStarScore();
 
 	setTimeout(function(){
-		document.getElementById('loadScreen').style.display = 'none';
+		domId('loadScreen').style.display = 'none';
 	}, 2500);
-	document.getElementById('buttonX').onclick = function(){
+	domId('buttonX').onclick = function(){
 		playSound(clickSound);
 		start('x'); 
 	}; 
-	document.getElementById('buttonO').onclick = function(){
+	domId('buttonO').onclick = function(){
 		playSound(clickSound);
 		start('o'); 
 	};
-	document.getElementById('endGameButton').onclick = function(){
+	domId('endGameButton').onclick = function(){
 		playSound(clockSound);
 		endGame(); 
 	}; 
-	document.getElementById('continueGameButton').onclick = function(){
+	domId('continueGameButton').onclick = function(){
 		playSound(clockSound);
 		continueGame(); 
 	};
-	document.getElementById('soundMode').onclick = function(){
+	domId('soundMode').onclick = function(){
 		playSound(clockSound);
 		changeSound(); 
 	};	
-	document.getElementById('colorMode').onclick = function(){
+	domId('colorMode').onclick = function(){
 		playSound(clockSound);
 		changeColorScheme(); 
 	};
-	document.getElementById('starScore').onclick = function(){
+	domId('starScore').onclick = function(){
 		playSound(clockSound);
 		view.displayMessage('Всего звезд: ' + model.starScore);	
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
 	};
-	document.getElementById('difMode').onclick = function(){
+	domId('difMode').onclick = function(){
 		playSound(clockSound);
 		openDifficultWindow(); 
 	};
-	document.getElementById('easyButton').onclick = function(){
+	domId('easyButton').onclick = function(){
 		playSound(clockSound);
 		setEasy(); 
 	};
-	document.getElementById('normalButton').onclick = function(){
+	domId('normalButton').onclick = function(){
 		playSound(clockSound);
 		setNorm(); 
 	};
@@ -388,7 +399,7 @@ function setGrid(){ // генерация координат ячеек и ус�
 	for (let i = 0; i < model.boardSize; i++){
 		for (let j = 0; j < model.boardSize; j++){
 			let location = i + '' + j;
-			document.getElementById(location).addEventListener('click', function (e){
+			domId(location).addEventListener('click', function (e){
 				if (document.querySelector('#window').style.display === 'none' && 
 					model.currentMove !== model.currentAI && !model.gameOver){
 					controller.playerMove(location);
@@ -412,7 +423,7 @@ function setStar (location){ // размещение звезды на поле
 		let star = document.createElement('img');
 		star.src = 'images/star.png';
 		star.id = 'star';
-		document.getElementById(location).append(star);
+		domId(location).append(star);
 		model.currentStarLocation = location;			
 	} else {
 		return false;
@@ -436,7 +447,7 @@ function clearBoard(){ // очистка поля и статистики тек
 	for (let i = 0; i < model.boardSize; i++){
 		for (let j = 0; j < model.boardSize; j++){
 			let idBoard = i + '' + j;
-			document.getElementById(idBoard).classList.remove('x', 'o');
+			domId(idBoard).classList.remove('x', 'o');
 		}
 	}
 	view.removeLine();
@@ -455,7 +466,7 @@ function clearBoard(){ // очистка поля и статистики тек
 
 function removeStar(){ // убрать звезду с поля
 	if (model.difficult > 0) {
-		document.getElementById('star').remove();
+		domId('star').remove();
 		model.currentStarLocation = null;		
 	} else {
 		return false;
@@ -483,84 +494,84 @@ function continueGame(){ // начало новой партии текущей 
 }
 
 function changeSound(){ // смена беззвучного режима
-	if (document.getElementById('soundMode').classList.contains('sound')){
-		document.getElementById('soundMode').setAttribute('class', 'mute');
+	if (domId('soundMode').classList.contains('sound')){
+		domId('soundMode').setAttribute('class', 'mute');
 		localStorage.setItem('XOSoundMode', 'mute');
 		view.displayMessage('Режим: без звука');	
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
 	} else {
-		document.getElementById('soundMode').setAttribute('class', 'sound');
+		domId('soundMode').setAttribute('class', 'sound');
 		view.displayMessage('Режим: со звуком');
 		localStorage.setItem('XOSoundMode', 'sound');	
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
 	}
 }
 
 function changeColorScheme(){ // смена стиля экрана (светлый\темный)
-	if (document.getElementById('colorMode').classList.contains('lightMode')){
-		document.getElementById('colorMode').setAttribute('class', 'darkMode');
+	if (domId('colorMode').classList.contains('lightMode')){
+		domId('colorMode').setAttribute('class', 'darkMode');
 		document.body.setAttribute('class', 'darkBody');
-		document.getElementById('window').setAttribute('class', 'darkWindow');
+		domId('window').setAttribute('class', 'darkWindow');
 		localStorage.setItem('XOColorMode', 'dark');
 		view.displayMessage('Тема: темная');	
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
 	} else {
-		document.getElementById('colorMode').setAttribute('class', 'lightMode');
+		domId('colorMode').setAttribute('class', 'lightMode');
 		document.body.setAttribute('class', 'lightBody');
-		document.getElementById('window').setAttribute('class', 'lightWindow');
+		domId('window').setAttribute('class', 'lightWindow');
 		localStorage.setItem('XOColorMode', 'light');
 		view.displayMessage('Тема: светлая');	
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
 	}
 }
 
 function openDifficultWindow(){
-	if (document.getElementById('difWindow').style.display === 'none'){
-		document.getElementById('difWindow').style.display = 'block';
+	if (domId('difWindow').style.display === 'none'){
+		domId('difWindow').style.display = 'block';
 	} else {
-		document.getElementById('difWindow').style.display = 'none';		
+		domId('difWindow').style.display = 'none';		
 	}
 }
 
 function setEasy(){
-if (document.getElementById('difMode').classList.contains('normal')){
+if (domId('difMode').classList.contains('normal')){
 		document.querySelector('#window').style.display === 'none' ? endGame() : false;
-		document.getElementById('difMode').setAttribute('class', 'easy');
-		document.getElementById('easyButton').setAttribute('class', 'selEasyBut');
-		document.getElementById('normalButton').setAttribute('class', 'unselNormBut');						
+		domId('difMode').setAttribute('class', 'easy');
+		domId('easyButton').setAttribute('class', 'selEasyBut');
+		domId('normalButton').setAttribute('class', 'unselNormBut');						
 		model.difficult = 0;
 		view.displayMessage('Сложность: легко');
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
-		document.getElementById('difWindow').style.display = 'none';
+		domId('difWindow').style.display = 'none';
 	} else {
-		document.getElementById('difWindow').style.display = 'none';
+		domId('difWindow').style.display = 'none';
 	}
 }
 
 function setNorm(){
-if (document.getElementById('difMode').classList.contains('easy')){
+if (domId('difMode').classList.contains('easy')){
 		document.querySelector('#window').style.display === 'none' ? endGame() : false;
-		document.getElementById('difMode').setAttribute('class', 'normal');
-		document.getElementById('normalButton').setAttribute('class', 'selNormBut');
-		document.getElementById('easyButton').setAttribute('class', 'unselEasyBut');				
+		domId('difMode').setAttribute('class', 'normal');
+		domId('normalButton').setAttribute('class', 'selNormBut');
+		domId('easyButton').setAttribute('class', 'unselEasyBut');				
 		view.displayMessage('Сложность: норм');	
 		model.difficult = 1;
-		setTimeout(function(){
+		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
-		document.getElementById('difWindow').style.display = 'none';		
+		domId('difWindow').style.display = 'none';		
 	} else {
-		document.getElementById('difWindow').style.display = 'none';
+		domId('difWindow').style.display = 'none';
 	}
 }
 
@@ -586,7 +597,7 @@ var gameOverSound = new Audio('sounds/gameOver.wav');
 gameOverSound.preload = 'auto';
 
 function playSound(sound){ // воспроизведение звука в зависимости от режима звука
-	document.getElementById('soundMode').classList.contains('sound') ? sound.play() : false;
+	domId('soundMode').classList.contains('sound') ? sound.play() : false;
 }
 
 window.onload = init;
