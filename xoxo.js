@@ -23,8 +23,8 @@ var view = { //визуальное представление
 	},
 
 	displayStat: function (){ //вывод счета и количества сыгранных партий
-		domId('statArea').innerHTML = 'Счет ' + model.playerScore + 
-		' : ' + model.AIScore + '<br>' + 'Сыграно партий: ' + model.rounds;
+		domId('statArea').innerHTML = `Счет ${model.playerScore} : ${model.AIScore} <br> 
+		Сыграно партий: ${model.rounds}`;
 	},
 	
 	displaySym: function (location, sym){ //вывод ходов
@@ -216,12 +216,10 @@ function isGameEnd (item){ // проверка окончена ли игра
 }
 
 function shuffle (arr){ // перемешивание позиций элементов в массиве случайным образом
-	let j, temp;
-	for (let i = arr.length - 1; i > 0; i--){
+	let i, j;
+	for (i = arr.length - 1; i > 0; i--){
 		j = Math.floor(Math.random() * (i + 1));
-		temp = arr[j];
-		arr[j] = arr[i];
-		arr[i] = temp;
+		[arr[j], arr[i]] = [arr[i], arr[j]];
 	}
 	return arr;
 }
@@ -345,7 +343,7 @@ function init(){ //инициализация игры (стартового э�
 	};
 	domId('starScore').onclick = function(){
 		playSound(clockSound);
-		view.displayMessage('Всего звезд: ' + model.starScore);	
+		view.displayMessage(`Всего звезд: ${model.starScore}`);	
 		timer = setTimeout(function(){
 			view.displayMessage(model.currentMessage);
 		}, 1500);
