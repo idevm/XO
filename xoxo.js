@@ -1,6 +1,4 @@
-function domId(id) { // сокращение для удобства
-	return document.getElementById(id);
-}
+let domId = id => document.getElementById(id); // сокращение для удобства
 
 let timer; // для сохранения id таймеров и их отмены
 
@@ -52,21 +50,20 @@ var view = { //визуальное представление
 };
 
 function show(msg){ // анимация строки сообщения
-	let letters = msg.split('');
+	let letters = [...msg];
 	let liveString = '';
 	let index = 0;
 	loop();
 	function loop (){
-		setTimeout(
-			function(){
-				liveString += letters[index];
-				domId('messageArea').innerHTML = liveString;
-				index += 1;
-				if (index === letters.length){
-					return;
-				}
-				return loop();		
-			}, 15);
+		setTimeout(() => {
+			liveString += letters[index];
+			domId('messageArea').innerHTML = liveString;
+			index += 1;
+			if (index === letters.length){
+				return;
+			}
+			return loop();		
+		}, 15);
 	}
 }
 
@@ -147,9 +144,8 @@ var model = { //модель и состояние игры
 	nextTurn: function (nextPlayer) { //передача хода
  		shuffle(model.cells);
  		if (!this.gameOver && this.moves < this.boardSize * this.boardSize){
-			setTimeout(function(){ // длительность передачи хода (по факту - время на ход компьютера)
-				nextPlayer();
-			}, 750); 
+			setTimeout(() => nextPlayer(), 750); 
+			// длительность передачи хода (по факту - время на ход компьютера)
 		} else if (!this.gameOver && this.moves === this.boardSize * this.boardSize) {
 			model.currentMessage = 'Ничья!';
 			view.displayMessage(model.currentMessage);
@@ -176,7 +172,7 @@ function hit(location, sym){ //функция записи хода игрока
 }
 
 function isGameEnd (item){ // проверка окончена ли игра
-	if (item.hits.every(function (hit){return hit === model.currentPlayer;})){
+	if (item.hits.every((hit) => {return hit === model.currentPlayer;})){
 		model.currentMessage = 'Вы выиграли!';
 		view.displayMessage(model.currentMessage);
 		playSound(winSound);
@@ -193,7 +189,7 @@ function isGameEnd (item){ // проверка окончена ли игра
 			domId('star').setAttribute('class', 'winStar');	
 		} 
 	} else {
-		if (item.hits.every(function (hit){return hit === model.currentAI;})){
+		if (item.hits.every((hit) => {return hit === model.currentAI;})){
 			model.currentMessage = 'Вы проиграли!';
 			view.displayMessage(model.currentMessage);
 			playSound(failSound);
@@ -270,9 +266,7 @@ function parseMove(location){ //валидатор хода игрока
 		model.playerTurn(location);
 	} else {
 		view.displayMessage('Ячейка занята!');
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 	}
 }
 
@@ -344,9 +338,7 @@ function init(){ //инициализация игры (стартового э�
 	domId('starScore').onclick = function(){
 		playSound(clockSound);
 		view.displayMessage(`Всего звезд: ${model.starScore}`);	
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 	};
 	domId('difMode').onclick = function(){
 		playSound(clockSound);
@@ -383,9 +375,7 @@ function start (sym){ // старт игры
 	} else {
 		model.currentPlayer = 'o';
 		model.currentAI = 'x';
-		setTimeout(function(){
-			controller.AIMove();
-		}, 750);
+		setTimeout(() => controller.AIMove(), 750);
 		model.currentMessage = 'Ход противника!';
 		model.currentMove = model.currentAI;
 	}
@@ -397,7 +387,7 @@ function setGrid(){ // генерация координат ячеек и ус�
 	for (let i = 0; i < model.boardSize; i++){
 		for (let j = 0; j < model.boardSize; j++){
 			let location = i + '' + j;
-			domId(location).addEventListener('click', function (e){
+			domId(location).addEventListener('click', (e) => {
 				if (document.querySelector('#window').style.display === 'none' && 
 					model.currentMove !== model.currentAI && !model.gameOver){
 					controller.playerMove(location);
@@ -481,9 +471,7 @@ function continueGame(){ // начало новой партии текущей 
 			view.displayMessage(model.currentMessage);
 			model.currentMove = model.currentPlayer;
 		} else {
-			setTimeout(function(){
-				controller.AIMove();
-			}, 750);
+			setTimeout(() => controller.AIMove(), 750);
 			model.currentMessage = 'Ход противника!';
 			view.displayMessage(model.currentMessage);
 			model.currentMove = model.currentAI;
@@ -496,16 +484,12 @@ function changeSound(){ // смена беззвучного режима
 		domId('soundMode').setAttribute('class', 'mute');
 		localStorage.setItem('XOSoundMode', 'mute');
 		view.displayMessage('Режим: без звука');	
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 	} else {
 		domId('soundMode').setAttribute('class', 'sound');
 		view.displayMessage('Режим: со звуком');
 		localStorage.setItem('XOSoundMode', 'sound');	
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 	}
 }
 
@@ -516,18 +500,14 @@ function changeColorScheme(){ // смена стиля экрана (светл�
 		domId('window').setAttribute('class', 'darkWindow');
 		localStorage.setItem('XOColorMode', 'dark');
 		view.displayMessage('Тема: темная');	
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 	} else {
 		domId('colorMode').setAttribute('class', 'lightMode');
 		document.body.setAttribute('class', 'lightBody');
 		domId('window').setAttribute('class', 'lightWindow');
 		localStorage.setItem('XOColorMode', 'light');
 		view.displayMessage('Тема: светлая');	
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 	}
 }
 
@@ -547,9 +527,7 @@ if (domId('difMode').classList.contains('normal')){
 		domId('normalButton').setAttribute('class', 'unselNormBut');						
 		model.difficult = 0;
 		view.displayMessage('Сложность: легко');
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 		domId('difWindow').style.display = 'none';
 	} else {
 		domId('difWindow').style.display = 'none';
@@ -564,9 +542,7 @@ if (domId('difMode').classList.contains('easy')){
 		domId('easyButton').setAttribute('class', 'unselEasyBut');				
 		view.displayMessage('Сложность: норм');	
 		model.difficult = 1;
-		timer = setTimeout(function(){
-			view.displayMessage(model.currentMessage);
-		}, 1500);
+		timer = setTimeout(() => view.displayMessage(model.currentMessage), 1500);
 		domId('difWindow').style.display = 'none';		
 	} else {
 		domId('difWindow').style.display = 'none';
@@ -594,8 +570,7 @@ failSound.preload = 'auto';
 var gameOverSound = new Audio('sounds/gameOver.wav');
 gameOverSound.preload = 'auto';
 
-function playSound(sound){ // воспроизведение звука в зависимости от режима звука
-	domId('soundMode').classList.contains('sound') ? sound.play() : false;
-}
+let playSound = sound => domId('soundMode').classList.contains('sound') ? sound.play() : false;
+// воспроизведение звука в зависимости от режима звука
 
 window.onload = init;
